@@ -9,14 +9,14 @@ function PostForm({post}) {
     const {register, handleSubmit, watch, setValue, control, getValues} = useForm({
         defaultValues: {
             title: post?.title || '',
-            slug: slug?.slug || '',
+            slug: post?.slug || '',
             content: post?.content || '',
             status: post?.status || 'active'
         }
     })
 
     const navigate = useNavigate()
-    const userData=  useSelector(state => state.user.userData)
+    const userData=  useSelector(state => state.auth.userData)
 
     const submit = async (data) => {
         if(post) {
@@ -41,8 +41,8 @@ function PostForm({post}) {
                 data.featuredImage = fileId
                 const dbPost = await appwriteService.createPost({
                     ...data,
-                    userId: userData.$id,
-                })
+                    userId: userData.$id
+                });
 
                 if(dbPost) {
                     navigate(`/post/${dbPost.$id}`)

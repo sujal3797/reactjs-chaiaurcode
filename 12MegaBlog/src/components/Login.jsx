@@ -7,6 +7,7 @@ import authService from '../appwrite/auth'
 import {useForm} from "react-hook-form"
 
 function Login() {
+    console.log("Login Component Rendered");
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const {register, handleSubmit} = useForm()
@@ -57,7 +58,7 @@ function Login() {
                         required: true,
                         validate: {
                             matchPattern: (value) => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
-                                                    .test(v)|| "Email address must be a valid address",
+                                                    .test(value)|| "Email address must be a valid address",
                         }
                     })}
                     />
