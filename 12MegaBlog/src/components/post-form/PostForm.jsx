@@ -19,48 +19,52 @@ function PostForm({post}) {
     const userData=  useSelector(state => state.auth.userData)
 
     const submit = async (data) => {
-        if(post) {
-            const file = data.image[0] ? appwriteService.uploadFile(data.image[0]) : null
+    if (post) {
+        const file = data.image[0]
+            ? await appwriteService.uploadFile(data.image[0])
+            : null;
 
-            if (file) {
-                appwriteService.deleteFile(post.featuredImage)
-            }
-            const dbPost = await appwriteService.updatePost(post.$id, {
+        if (file) {
+            appwriteService.deleteFile(post.featuredImage);
+        }
+
+        const dbPost = await appwriteService.updatePost(post.$id, {
+            ...data,
+            featuredImage: file ? file.$id : post.featuredImage,
+        });
+
+        if (dbPost) {
+            navigate(`/post/${dbPost.$id}`);
+        }
+    } else {
+        const file = await appwriteService.uploadFile(data.image[0]);
+
+        if (file) {
+            const fileId = file.$id;
+            data.featuredImage = fileId;
+            const dbPost = await appwriteService.createPost({
                 ...data,
-                featuredImage: file ? file.$id : undefined
-            })
+                userId: userData.$id,
+            });
 
-            if(dbPost) {
-                navigate(`/post/${dbPost.$id}`)
-            }
-        } else {
-            const file = await appwriteService.uploadFile(data.image[0])
-
-            if(file) {
-                const fileId = file.$id
-                data.featuredImage = fileId
-                const dbPost = await appwriteService.createPost({
-                    ...data,
-                    userId: userData.$id
-                });
-
-                if(dbPost) {
-                    navigate(`/post/${dbPost.$id}`)
-                }
+            if (dbPost) {
+                navigate(`/post/${dbPost.$id}`);
             }
         }
     }
+};
 
     const slugTransform = useCallback((value) => {
-        if(value && typeof value === 'string') {
-            return value
+    if (value && typeof value === 'string') {
+        return value
             .trim()
             .toLowerCase()
-            .replace(/^[a-zA-Z\d\s]+/g, '-')
-            .replace(/\s/g, '-')
-        }
-        return ''
-    }, [])
+            // Replace spaces and unsupported characters with a hyphen
+            .replace(/[^a-z\d\s-]/g, '')
+            .replace(/\s+/g, '-');
+    }
+    return '';
+}, []);
 
     React.useEffect(()=>{
         const subscription = watch((value, {name}) => {

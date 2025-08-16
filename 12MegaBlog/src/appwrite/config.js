@@ -19,7 +19,7 @@ export class Service{
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
-                'unique()',
+                slug,
                 {
                     title,
                     content,
@@ -51,19 +51,19 @@ export class Service{
         }
     }
 
-    async deletePost({slug}) {
-        try {
-            await this.databases.deleteDocument(
-                conf.appwriteDatabaseId,
-                conf.appwriteCollectionId,
-                slug
-            )
-            return true
-        } catch (error) {
-            console.log("Appwrite service :: deletePost :: error ", error)
-            return false
-        }
+    async deletePost(slug) { // Changed from {slug} to slug
+    try {
+        await this.databases.deleteDocument(
+            conf.appwriteDatabaseId,
+            conf.appwriteCollectionId,
+            slug // Now 'slug' will correctly be the post ID string
+        );
+        return true;
+    } catch (error) {
+        console.log("Appwrite service :: deletePost :: error ", error);
+        return false;
     }
+}
 
     async getPost(slug) {
         try {
@@ -121,7 +121,7 @@ export class Service{
         return this.bucket.getFilePreview(
             conf.appwriteBucketId,
             fileId
-        )
+        ).href
     }
 }
 
