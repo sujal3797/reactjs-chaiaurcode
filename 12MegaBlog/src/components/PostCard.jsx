@@ -1,26 +1,24 @@
-import React from 'react';
-import appwriteService from "../appwrite/config";
-import { Link } from 'react-router-dom';
+import React from 'react'
+import appwriteService from "../appwrite/config" // <-- Add this import line
+import {Link} from 'react-router-dom'
 
-function PostCard({ $id, title, featuredImage, authorName, createdAt }) { // Add authorName and createdAt to props
+function PostCard({$id, title, featuredImage}) {
+    
   return (
-    <div className='w-full bg-white rounded-xl shadow-md overflow-hidden 
-                   hover:shadow-xl hover:-translate-y-1 transition-all duration-300'>
-      {/* ... image link ... */}
-      
-      <div className='p-5'>
-        <h2 className='text-xl font-bold font-heading text-primary-text mb-2'>
-          <Link to={`/post/${$id}`} className="hover:text-accent transition-colors duration-200">
-            {title}
-          </Link>
-        </h2>
-        {/* Replace placeholder with actual data */}
-        <p className="text-sm text-secondary-text">
-          By {authorName || 'Anonymous'} · {new Date(createdAt).toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' })}
-        </p>
-      </div>
-    </div>
-  );
+    <Link to={`/post/${$id}`}>
+        <div className='w-full bg-gray-100 rounded-xl p-4'>
+            <div className='w-full justify-center mb-4'>
+                <img src={appwriteService.getFilePreview(featuredImage)} alt={title}
+                className='rounded-xl' />
+
+            </div>
+            <h2
+            className='text-xl font-bold'
+            >{title}</h2>
+        </div>
+    </Link>
+  )
 }
 
-export default PostCard;
+
+export default PostCard
