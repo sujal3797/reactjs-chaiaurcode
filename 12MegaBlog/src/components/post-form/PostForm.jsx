@@ -12,6 +12,7 @@ export default function PostForm({ post }) {
             slug: post?.$id || "",
             content: post?.content || "",
             status: post?.status || "active",
+            topic: post?.topic || "",
         },
     });
 
@@ -90,6 +91,12 @@ export default function PostForm({ post }) {
                     placeholder="Title"
                     className="mb-4"
                     {...register("title", { required: true })}
+                />
+                 <Input
+                    label="Topic :"
+                    placeholder="e.g., Technology, Productivity, Art"
+                    className="mb-4"
+                    {...register("topic", { required: true })}
                 />
                 <Input
                     label="Slug :"

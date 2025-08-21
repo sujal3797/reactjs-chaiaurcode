@@ -20,7 +20,7 @@ function Header() {
   return (
     <header className='py-4 sticky top-0 z-50 w-full bg-background border-b border-gray-200'>
       <Container>
-        <nav className='flex items-center justify-between'>
+        <nav className='flex items-center justify-between max-w-7xl mx-auto'>
           {/* This is the corrected section */}
           <div className='mr-4'>
             <Logo />

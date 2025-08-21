@@ -15,7 +15,7 @@ export class Service{
     }
 
     // Corrected function signature below
-    async createPost({title, slug, content, featuredImage, status, userId, authorName, createdAt}) {
+    async createPost({title, slug, content, featuredImage, status, userId, authorName, createdAt, topic}) {
         try {
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
@@ -28,7 +28,8 @@ export class Service{
                     status,
                     userId,
                     authorName, // Now this will work
-                    createdAt   // Now this will work
+                    createdAt,  // Now this will work
+                    topic,
                 }
             )
         } catch (error) {
@@ -37,7 +38,7 @@ export class Service{
     }
 
     // ... rest of the file remains the same ...
-    async updatePost(slug, {title, content, featuredImage, status}) {
+    async updatePost(slug, {title, content, featuredImage, status, topic}) {
         try {
             return await this.databases.updateDocument(
                 conf.appwriteDatabaseId,
@@ -47,7 +48,8 @@ export class Service{
                     title,
                     content,
                     featuredImage,
-                    status
+                    status,
+                    topic,
                 }
             )
         } catch (error) {
@@ -124,10 +126,7 @@ export class Service{
     }
 
     getFilePreview(fileId) {
-        return this.bucket.getFilePreview(
-            conf.appwriteBucketId,
-            fileId
-        )
+        return `${conf.appwriteUrl}/storage/buckets/${conf.appwriteBucketId}/files/${fileId}/view?project=${conf.appwriteProjectId}`;
     }
 }
 
