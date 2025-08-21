@@ -11,7 +11,7 @@ function Header() {
   const navItems = [
     { name: 'Home', slug: "/", active: true },
     { name: "Login", slug: "/login", active: !authStatus },
-    { name: "Signup", slug: "/signup", active: !authStatus },
+    { name: "Signup", slug: "/signup", active: !authStatus, primary: true }, // Added a 'primary' flag
     { name: "All Posts", slug: "/all-posts", active: authStatus },
     { name: "Add Post", slug: "/add-post", active: authStatus },
   ];
@@ -22,16 +22,22 @@ function Header() {
         <nav className='flex items-center justify-between'>
           <div className='mr-4'>
             <Link to='/'>
-              <Logo width='70px' />
+              <Logo />
             </Link>
           </div>
-          <ul className='flex items-center space-x-6'>
+          <ul className='flex items-center space-x-2 md:space-x-6'>
             {navItems.map((item) =>
               item.active ? (
                 <li key={item.name}>
                   <button
                     onClick={() => navigate(item.slug)}
-                    className='text-base font-medium text-secondary-text hover:text-accent transition-colors duration-200'
+                    className={`inline-block px-4 py-2 text-base font-medium transition-colors duration-200
+                      ${
+                        item.primary
+                          ? 'bg-accent text-white rounded-full hover:bg-accent-hover' // Primary button style
+                          : 'text-secondary-text hover:text-accent' // Default style
+                      }
+                    `}
                   >
                     {item.name}
                   </button>
